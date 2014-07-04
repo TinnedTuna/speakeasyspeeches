@@ -1,0 +1,16 @@
+<!doctype html>
+<html>
+    <head>
+        <title>
+        {% if title %}
+            SpeakEasy -- {{title}}
+        {% else %}
+            Welcome to SpeakEasy Speeches
+        {% endif %}
+        </title>
+    </head>
+    <body>
+        {% block content %}{% endblock %}
+    </body>
+</html>
+
