@@ -1,4 +1,5 @@
-from flask import render_template
+from flask import render_template, flash, redirect
+from forms import LoginForm
 from app import app
 
 @app.route('/')
@@ -24,3 +25,17 @@ def blog():
             ]
     return render_template("blog.html", user=user, posts=posts, title="Blog")
 
+@app.route('/login', methods = ['GET'])
+def login():
+    form = LoginForm()
+    return render_template('login.html', title='Login', form=form)
+
+@app.route('/authenticate', methods = ['POST'])
+def authenticate():
+    form = LoginForm()
+    if form.validate_on_submit():
+        flash("Login requested for " + form.username.data)
+        return redirect("/index")
+    else:
+        flash("Could not validate input!");
+        return render_template('login.html', title='Login', form=form)

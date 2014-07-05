@@ -9,6 +9,17 @@
         {% endif %}
         </title>
     </head>
+    {% with messages = get_flashed_messages() %}
+    {% if messages %}
+    <div class=".messages">
+        <ul>
+            {% for msg in messages %}
+            <li>{{msg}}</li>
+            {% endfor %}
+        </ul>
+    </div>
+    {% endif %}
+    {% endwith %}
     <body>
         {% block content %}{% endblock %}
     </body>

@@ -1,0 +1,11 @@
+{% extends "base.html" %}
+
+{% block content %}
+<h1>Please Login<h1>
+        <form action="/authenticate" method="post" name="login">
+            {{form.hidden_tag()}}
+            <p>Username: {{form.username(size=80)}}</p>
+            <p>Password: {{form.password(size=512)}}</p>
+            <p><input type="submit" value="Login" /></p>
+        </form>
+{% endblock %}

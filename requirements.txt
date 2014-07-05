@@ -1,0 +1,1 @@
+flask, flask-login, sqlalchemy, flask-sqlalchemy, flask-wtf, markdown, bleach, sqlalchemy-migrate, flask-bcrypt
