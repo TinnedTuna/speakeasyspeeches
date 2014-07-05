@@ -1,0 +1,11 @@
+{% extends "base.html" %}
+
+{% block content %}
+<h1>Create Page</h1>
+    <form action='/page/create' method='post' name='create_page'>
+        {{form.hidden_tag()}}
+        <p>Title: {{form.title()}}</p>
+        <p>Content: {{form.content()}}</p>
+        <input type='submit' value='Create Page'/>
+    </form>
+{% endblock %}

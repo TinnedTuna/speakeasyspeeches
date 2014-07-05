@@ -1,7 +1,8 @@
 from flask import render_template, flash, redirect
-from flask.ext.login import login_user, current_user
-from forms import LoginForm
-from app import app, lm, models, bcrypt
+from flask.ext.login import login_user, current_user, login_required
+from forms import LoginForm, CreatePage
+from app import db, app, lm, models, bcrypt
+import datetime
 
 @app.route('/')
 @app.route('/index')
@@ -46,6 +47,40 @@ def authenticate():
             return render_template('login.html', title='Login', form=form, error=True)
     else:
         return render_template('login.html', title='Login', form=form)
+
+@app.route('/page/create', methods = ['POST'])
+@login_required
+def create_page():
+    form = CreatePage()
+    if form.validate_on_submit():
+        if models.Page.query.filter_by(title=form.title.data).first() is None:
+            new_page = models.Page( \
+                    title=form.title.data, \
+                    author_user_id=current_user.id, \
+                    content=form.content.data, \
+                    timestamp=datetime.datetime.now())
+            db.session.add(new_page)
+            db.session.commit()
+            return render_template('index.html', user=current_user)
+        else:
+            flash('Could not create page, a page with that title already exists')
+            return render_template('create_page.html', form=form)
+
+@app.route('/page/create', methods = ['GET'])
+@login_required
+def show_create_page():
+    form = CreatePage()
+    return render_template('create_page.html', form=form)
+
+@app.route('/page/<id>', methods = ['GET'])
+def view_page(id):
+    page = models.Page.query.get(int(id))
+    if page is None:
+        ### TODO return 404 
+        pass
+    else:
+        return render_template('view_page.html', page=page)
+    
 
 @lm.user_loader
 def user_loder(id):
