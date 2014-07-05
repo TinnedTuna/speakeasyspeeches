@@ -1,4 +1,5 @@
 from app import db
+import markdown
 
 class User(db.Model):
     id = db.Column(db.Integer, primary_key=True)
@@ -29,4 +30,7 @@ class Page(db.Model):
 
     def __repr__(self):
         return 'Post:{id: %r, title: %s}' % (self.id, self.title)
+
+    def rendered_content(self):
+        return markdown.markdown(self.content)
 

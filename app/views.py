@@ -66,6 +66,35 @@ def create_page():
             flash('Could not create page, a page with that title already exists')
             return render_template('create_page.html', form=form)
 
+@app.route('/page/edit/<id>', methods = ['GET'])
+@login_required
+def show_edit_page(id):
+    form = CreatePage()
+    page = models.Page.query.get(int(id))
+    if page is None:
+        ### TODO return 404
+        pass
+    else:
+        form.title.data = page.title
+        form.content.data = page.content
+        return render_template('edit_page.html', form=form, page_id=page.id)
+
+@app.route('/page/edit/<id>', methods= ['POST'])
+@login_required
+def edit_page(id):
+    form = CreatePage()
+    existing_page = models.Page.query.get(int(id))
+    if existing_page is None:
+        flash("No such page could be found")
+        return render_template('edit_page.html', form=form, page_id=id)
+    else:
+        existing_page.title=form.title.data
+        existing_page.content = form.content.data
+        db.session.add(existing_page)
+        db.session.commit()
+        flash("Page updated")
+        return render_template('view_page.html', page=existing_page, title=existing_page.title)
+
 @app.route('/page/create', methods = ['GET'])
 @login_required
 def show_create_page():
