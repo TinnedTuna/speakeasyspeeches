@@ -2,6 +2,9 @@
 
 {% block content %}
 <h1>Please Login<h1>
+        {% if error %}
+        <h2>Could not login, username or password was incorrect</h2>
+        {% endif %}
         <form action="/authenticate" method="post" name="login">
             {{form.hidden_tag()}}
             <p>Username: {{form.username(size=80)}}</p>

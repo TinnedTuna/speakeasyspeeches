@@ -1,11 +1,12 @@
 from flask import render_template, flash, redirect
+from flask.ext.login import login_user, current_user
 from forms import LoginForm
-from app import app
+from app import app, lm, models, bcrypt
 
 @app.route('/')
 @app.route('/index')
 def index():
-    user = { 'username' : 'Frank!' }
+    user = current_user
     return render_template("index.html", user=user)
 
 @app.route('/blog')
@@ -34,8 +35,18 @@ def login():
 def authenticate():
     form = LoginForm()
     if form.validate_on_submit():
-        flash("Login requested for " + form.username.data)
-        return redirect("/index")
+        user = models.User.query.filter_by(username=form.username.data).first()
+        if user is None:
+            return render_template('login.html', title='Login', form=form, error=True)
+        if bcrypt.check_password_hash(user.password, form.password.data):
+            login_user(user)
+            flash('Login was successful for %s' % (repr(user)))
+            return redirect("/index")
+        else:
+            return render_template('login.html', title='Login', form=form, error=True)
     else:
-        flash("Could not validate input!");
         return render_template('login.html', title='Login', form=form)
+
+@lm.user_loader
+def user_loder(id):
+    return models.User.query.get(int(id))
