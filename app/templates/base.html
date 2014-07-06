@@ -9,13 +9,14 @@
         {% endif %}
         </title>
         <!-- Latest compiled and minified CSS -->
-        <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
+        <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css"/>
 
         <!-- Optional theme -->
-        <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap-theme.min.css">
+        <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap-theme.min.css"/>
 
         <!-- Latest compiled and minified JavaScript -->
         <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
+        <link rel="stylesheet" href='{{ url_for("static", filename="styles.css") }}'/>
     </head>
     {% with messages = get_flashed_messages() %}
     {% if messages %}
@@ -26,18 +27,26 @@
     {% endif %}
     {% endwith %}
     <body>
-        <div class="jumbotron">
-            <h1>SpeakEasy Speeches</h1>
-            <p>Word-perfect speeches for any occassion.</p>
-        </div>
         {% if menu %}
-        <ul class="nav nav-tabs" tole="tablist">
-            {% for menu_item in menu %}
-            <li><a href='{{menu_item.menu_url}}'>{{menu_item.menu_display}}</a></li>
-            {% endfor %}
-        </ul>
+        <div class="container">
+            <nav class="collapse navbar-collapse bs-navbar-collapse" role="navigation">
+                <ul class="nav navbar-nav">
+                    {% for menu_item in menu %}
+                    <li><a href='{{menu_item.menu_url}}'>{{menu_item.menu_display}}</a></li>
+                    {% endfor %}
+                </ul>
+            </nav>
+        </div>
         {% endif %}
-        {% block content %}{% endblock %}
+        <div class="jumbotron">
+            <div class="container">
+                <h1>SpeakEasy Speeches</h1>
+                <p>Word-perfect speeches for any occassion.</p>
+            </div>
+        </div>
+        <div class="container">
+            {% block content %}{% endblock %}
+        </div>
     </body>
 </html>
 

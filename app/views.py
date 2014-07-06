@@ -7,8 +7,7 @@ import datetime
 @app.route('/')
 @app.route('/index')
 def index():
-    user = current_user
-    return render_template("index.html", user=user, menu=menu())
+    return view_page(1)
 
 @app.route('/blog/<id>')
 def view_blog_post(id):
@@ -138,13 +137,8 @@ def user_loder(id):
     return models.User.query.get(int(id))
 
 def menu():
-    index_page = { 
-            'menu_display' : 'Home', \
-            'menu_url' : url_for('index')
-            }
     pages = models.Page.query.order_by(models.Page.id)
     menu = []
-    menu.append(index_page)
     for page in pages:
         menu_item = { 'menu_display' : page.title, \
                 'menu_url' : url_for('view_page', id=page.id)}

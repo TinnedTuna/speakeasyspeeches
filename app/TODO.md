@@ -7,5 +7,7 @@ SpeakEasy Speeches Todo List
   4. Contact Page
   3. Footer
   4. Styling
+    - Blog
+    - Edit/Create blog/Page pages
   5. Testing
   6. Deployment
