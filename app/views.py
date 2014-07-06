@@ -1,4 +1,4 @@
-from flask import render_template, flash, redirect, url_for
+from flask import render_template, flash, redirect, url_for, abort
 from flask.ext.login import login_user, current_user, login_required
 from forms import LoginForm, CreatePage, BlogPost
 from app import db, app, lm, models, bcrypt
@@ -128,8 +128,7 @@ def show_create_page():
 def view_page(id):
     page = models.Page.query.get(int(id))
     if page is None:
-        ### TODO return 404 
-        pass
+        abort(404)
     else:
         return render_template('view_page.html', page=page, menu=menu(), title=page.title)
     
@@ -157,5 +156,7 @@ def menu():
     return menu
                 
 
-
+@app.errorhandler(404)
+def handle404(error):
+    return render_template("404.html", menu=menu())
 
