@@ -5,7 +5,7 @@
         <p>Posted by {{post.author}}</p>
         {% autoescape false %}
                 {{post.short_content()}}  
-                <a href='{{ url_for('view_blog_post', id=post.id) }}'>Read More</a>
+                <p><a href='{{ url_for('view_blog_post', id=post.id) }}'>Read More</a></p>
         {% endautoescape %}
         {% endfor %}
 {% endblock %}
