@@ -42,7 +42,7 @@ def show_create_blog_post():
 
 @app.route('/blog', methods=['GET'])
 def show_blog():
-    all_posts = models.Blog.query.order_by(models.Blog.timestamp)
+    all_posts = models.Blog.query.order_by(models.Blog.timestamp.desc())
     return render_template('blog_overview.html', title='Blog', posts=all_posts, menu=menu())
 
 @app.route('/login', methods = ['GET'])
@@ -127,6 +127,8 @@ def view_page(id):
         abort(404)
     else:
         return render_template('view_page.html', page=page, menu=menu(), title=page.title)
+
+
     
 
 @lm.user_loader
