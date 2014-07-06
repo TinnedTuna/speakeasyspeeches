@@ -1,15 +1,18 @@
 SpeakEasy Speeches Todo List
 ============================
 
-  2. Full-Text search
-  3. Admin Drop down:
+  1. Admin Drop down (only shown if authenticated):
     - User mgmt
     - Create new page
   2. Ensure menu appears on _all_ pages
+  3. Full-Text search
   4. Contact Page
-  4. Styling
-    - Blog
-    - Edit/Create blog/Page pages
-  5. Refactor into Blueprints (http://flask.pocoo.org/docs/blueprints)
-  5. Testing
-  6. Deployment
+  5. Styling
+    - Blog and posts
+    - We have no scroll bar for long pages. What is up with that?
+  6. Add "edit post" button onto blog posts.
+  7. Ensure that "edit *" buttons only show for authenticated users.
+  8. Refactor into Blueprints (http://flask.pocoo.org/docs/blueprints)
+  9. Testing
+  10. Signout button.
+  11. Deployment
