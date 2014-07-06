@@ -3,3 +3,15 @@
     padding-bottom: 11px;
     margin-bottom: 20px;
 }
+
+div .btn-page-edit {
+    margin-top:1.2em;
+    padding-left:0em;
+}
+
+
+div .btn-page-edit a {
+    padding-right : 6px;
+    padding-left : 12px;
+
+}
