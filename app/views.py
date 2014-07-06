@@ -34,13 +34,13 @@ def create_blog_post():
         return render_template('index.html', user=current_user)
     else:
         flash("Could not validate input, please try again")
-        render_template('create_blog.html', title='Create Blog', form=form)
+        return render_template('create_blog.html', title='Create Blog', form=form)
 
 @app.route('/blog/post', methods=['GET'])
 @login_required
 def show_create_blog_post():
     form = BlogPost()
-    return render_template('create_blog.html', title='Create Blog', form=form)
+    return render_template('create_blog.html', title='Create Blog', form=form, menu=menu())
 
 @app.route('/blog', methods=['GET'])
 def show_blog():
@@ -50,7 +50,7 @@ def show_blog():
 @app.route('/login', methods = ['GET'])
 def login():
     form = LoginForm()
-    return render_template('login.html', title='Login', form=form)
+    return render_template('login.html', title='Login', form=form, menu=menu())
 
 @app.route('/authenticate', methods = ['POST'])
 def authenticate():
@@ -58,15 +58,18 @@ def authenticate():
     if form.validate_on_submit():
         user = models.User.query.filter_by(username=form.username.data).first()
         if user is None:
+            flash("Error, incorrect username or password")
             return render_template('login.html', title='Login', form=form, error=True)
         if bcrypt.check_password_hash(user.password, form.password.data):
             login_user(user)
             flash('Login was successful for %s' % (repr(user)))
             return redirect("/index")
         else:
+            flash("Error, incorrect username or password")
             return render_template('login.html', title='Login', form=form, error=True)
     else:
-        return render_template('login.html', title='Login', form=form)
+        flash("Error, incorrect username or password")
+        return render_template('login.html', title='Login', form=form, error=True)
 
 @app.route('/page/create', methods = ['POST'])
 @login_required
@@ -128,7 +131,7 @@ def view_page(id):
         ### TODO return 404 
         pass
     else:
-        return render_template('view_page.html', page=page, menu=menu())
+        return render_template('view_page.html', page=page, menu=menu(), title=page.title)
     
 
 @lm.user_loader
