@@ -1,6 +1,6 @@
 from flask import render_template, flash, redirect
 from flask.ext.login import login_user, current_user, login_required
-from forms import LoginForm, CreatePage
+from forms import LoginForm, CreatePage, BlogPost
 from app import db, app, lm, models, bcrypt
 import datetime
 
@@ -10,22 +10,42 @@ def index():
     user = current_user
     return render_template("index.html", user=user)
 
-@app.route('/blog')
-def blog():
-    user = { 'username' :'blogUser' }
-    posts = [
-            { 
-                'author' : 'Frank',
-                'title' : 'First Post!',
-                'content' : 'This is the very first post!'
-                },
-            {
-                'author' : 'Sally',
-                'title' : 'Another Post!',
-                'content' : 'This is also a post!'
-                }
-            ]
-    return render_template("blog.html", user=user, posts=posts, title="Blog")
+@app.route('/blog/<id>')
+def view_blog_post(id):
+    post = models.Blog.query.get(blog_id)
+    if post is None:
+        ### TODO return 404?
+        pass
+    else:
+        return render_template("view_blog.html", user=user, post=post, title=post.title)
+
+@app.route('/blog/post', methods=['POST'])
+@login_required
+def create_blog_post():
+    form = BlogPost()
+    if form.validate_on_submit():
+        new_post = models.Blog( \
+                title = form.title.data, \
+                author_user_id=current_user.id, \
+                content=form.content.data, \
+                timestamp=datetime.datetime.now())
+        db.session.add(new_post)
+        db.session.commit()
+        return render_template('index.html', user=current_user)
+    else:
+        flash("Could not validate input, please try again")
+        render_template('create_blog.html', title='Create Blog', form=form)
+
+@app.route('/blog/post', methods=['GET'])
+@login_required
+def show_create_blog_post():
+    form = BlogPost()
+    return render_template('create_blog.html', title='Create Blog', form=form)
+
+@app.route('/blog', methods=['GET'])
+def show_blog():
+    all_posts = models.Blog.query.order_by(models.Blog.timestamp)
+    return render_template('blog_overview.html', title='Blog', posts=all_posts)
 
 @app.route('/login', methods = ['GET'])
 def login():

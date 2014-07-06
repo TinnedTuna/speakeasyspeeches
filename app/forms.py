@@ -9,3 +9,8 @@ class LoginForm(Form):
 class CreatePage(Form):
     title = TextField('title', validators = [Required()])
     content = TextAreaField('content', validators= [Required()])
+
+class BlogPost(Form):
+    title = TextField('title', validators = [Required()])
+    content = TextAreaField('content', validators= [Required()])
+
