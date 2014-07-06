@@ -17,6 +17,34 @@ def view_blog_post(id):
     else:
         return render_template("view_blog.html", user=current_user, menu=menu(), post=post, title=post.title)
 
+@app.route('/blog/post/<id>', methods=['GET'])
+@login_required
+def show_edit_post(id):
+    post = models.Blog.query.get(id)
+    form = BlogPost()
+    if post is None:
+        abort(404)
+    form.title.data = post.title
+    form.content.data = post.content
+    return render_template("edit_blog.html", form=form, user=current_user, menu=menu(), post=post, post_id=post.id, title="Editing %s" %(post.title))
+
+@app.route('/blog/post/<id>', methods=['POST'])
+@login_required
+def edit_post(id):
+    post = models.Blog.query.get(id)
+    if post is None:
+        abort(404)
+    form = BlogPost()
+    if form.validate_on_submit():
+        post.title = form.title.data
+        post.content = form.content.data
+        db.session.add(post)
+        db.session.commit()
+        flash("Post successfully updated")
+    else:
+        flash("Failed to update post, failed to validate user input.")
+    return show_edit_post(id)
+
 @app.route('/blog/post', methods=['POST'])
 @login_required
 def create_blog_post():
@@ -29,16 +57,16 @@ def create_blog_post():
                 timestamp=datetime.datetime.now())
         db.session.add(new_post)
         db.session.commit()
-        return render_template('index.html', user=current_user)
+        return view_blog_post(new_post.id)
     else:
         flash("Could not validate input, please try again")
-        return render_template('create_blog.html', title='Create Blog', form=form)
+        return show_create_blog_post() 
 
 @app.route('/blog/post', methods=['GET'])
 @login_required
 def show_create_blog_post():
     form = BlogPost()
-    return render_template('create_blog.html', title='Create Blog', form=form, menu=menu())
+    return render_template('edit_blog.html', title='Create Blog', form=form, menu=menu())
 
 @app.route('/blog', methods=['GET'])
 def show_blog():
