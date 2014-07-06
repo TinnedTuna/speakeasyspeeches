@@ -17,6 +17,6 @@ class BlogPost(Form):
 class UserForm(Form):
     username = TextField('username', validators = [Required()])
     display_name = TextField('display_name')
-    new_password = TextField('new_password')
-    confirm_password = TextField('confirm_password')
+    new_password = PasswordField('new_password')
+    confirm_password = PasswordField('confirm_password')
 

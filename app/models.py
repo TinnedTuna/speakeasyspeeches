@@ -6,6 +6,7 @@ class User(db.Model):
     username = db.Column(db.String(60), unique=True, nullable=True)
     display_name = db.Column(db.Text)
     password = db.Column(db.Text, nullable=False)
+    posts = db.relationship('Blog', backref='author')
 
     def is_authenticated(self):
         return True

@@ -1,6 +1,6 @@
 from flask import render_template, flash, redirect, url_for, abort
 from flask.ext.login import login_user, current_user, login_required
-from forms import LoginForm, CreatePage, BlogPost
+from forms import LoginForm, CreatePage, BlogPost, UserForm
 from app import db, app, lm, models, bcrypt
 import datetime
 
@@ -128,8 +128,67 @@ def view_page(id):
     else:
         return render_template('view_page.html', page=page, menu=menu(), title=page.title)
 
+@app.route('/user/create', methods=['GET'])
+@login_required
+def show_create_user():
+    form = UserForm()
+    return render_template('edit_user.html', menu=menu(), form=form)
 
-    
+@app.route('/user/edit/<id>', methods=['GET'])
+@login_required
+def show_edit_user(id):
+    user = models.User.query.get(id)
+    if user is None:
+        abort(404)
+    else:
+        form = UserForm()
+        form.username.data = user.username
+        form.display_name.data = user.display_name
+        return render_template('edit_user.html', menu=menu(), form=form, user_id=user.id)
+
+@app.route('/user/create', methods=['POST'])
+@login_required
+def create_user():
+    form = UserForm()
+    if form.validate_on_submit():
+        user = models.User.query.filter_by(username=form.username.data).first()
+        if user is not None:
+            flash("Cannot create a user with that username, one already exists.")
+            return show_create_user()
+        if form.new_password.data is None or form.new_password.data == "":
+            flash("A user requires a password.")
+            return show_create_user()
+        new_user = models.User()
+        new_user.username = form.username.data
+        new_user.display_name = form.display_name.data
+        if form.new_password.data != form.confirm_password.data:   
+            flash("The supplied passwords did not match.")
+            return show_create_user()
+        new_user.password = bcrypt.generate_password_hash(form.new_password.data)
+        db.session.add(new_user)
+        db.session.commit()
+        flash("User was created successfully!")
+        return render_template('edit_user.html', menu=menu(), form=form, user_id=new_user.id)
+
+@app.route('/user/edit/<id>', methods=['POST'])
+@login_required
+def edit_user(id):
+    existing_user = models.User.query.get(id)
+    if existing_user is None:
+        abort(404)
+    form = UserForm()
+    if form.validate_on_submit():
+        existing_user.username = form.username.data
+        existing_user.display_name = form.display_name.data
+        if form.new_password.data is not None and form.new_password.data != "" and form.new_password.data == form.confirm_password.data:
+            new_hash = bcrypt.generate_password_hash(form.new_password.data)
+            existing_user.password = new_hash
+        db.session.add(existing_user)
+        db.session.commit()
+        flash("User update was successful")
+        return show_edit_user(id)
+
+
 
 @lm.user_loader
 def user_loder(id):
