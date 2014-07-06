@@ -15,3 +15,15 @@ div .btn-page-edit a {
     padding-left : 12px;
 
 }
+
+.footer {
+    position: absolute;
+    bottom: 0px;
+    width: 100%;
+    height: 65px;
+    background-color: #EEE
+}
+
+.footer .container {
+    margin-top: 1.4em;
+}
