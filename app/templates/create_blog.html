@@ -4,7 +4,7 @@
 <h1>Create Page</h1>
     <form action='/blog/post' method='post' name='create_blog'>
         {{form.hidden_tag()}}
-        <p>Title: {{form.title()}}</p>
+        <p>: {{form.title()}}</p>
         <p>Content: {{form.content()}}</p>
         <input type='submit' value='Create blog'/>
     </form>
