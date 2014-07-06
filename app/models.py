@@ -32,6 +32,9 @@ class Page(db.Model):
     def __repr__(self):
         return 'Post:{id: %r, title: %s}' % (self.id, self.title)
 
+    def rendered_content(self):
+        return markdown.markdown(self.content)
+
 class Blog(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     title = db.Column(db.Text, nullable=False, unique=True)
@@ -44,4 +47,7 @@ class Blog(db.Model):
 
     def rendered_content(self):
         return markdown.markdown(self.content)
+
+    def short_content(self):
+        return self.rendered_content()[:200]
 

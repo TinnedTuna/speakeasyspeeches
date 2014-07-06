@@ -1,4 +1,4 @@
-from flask import render_template, flash, redirect
+from flask import render_template, flash, redirect, url_for
 from flask.ext.login import login_user, current_user, login_required
 from forms import LoginForm, CreatePage, BlogPost
 from app import db, app, lm, models, bcrypt
@@ -8,16 +8,16 @@ import datetime
 @app.route('/index')
 def index():
     user = current_user
-    return render_template("index.html", user=user)
+    return render_template("index.html", user=user, menu=menu())
 
 @app.route('/blog/<id>')
 def view_blog_post(id):
-    post = models.Blog.query.get(blog_id)
+    post = models.Blog.query.get(id)
     if post is None:
         ### TODO return 404?
         pass
     else:
-        return render_template("view_blog.html", user=user, post=post, title=post.title)
+        return render_template("view_blog.html", user=current_user, menu=menu(), post=post, title=post.title)
 
 @app.route('/blog/post', methods=['POST'])
 @login_required
@@ -45,7 +45,7 @@ def show_create_blog_post():
 @app.route('/blog', methods=['GET'])
 def show_blog():
     all_posts = models.Blog.query.order_by(models.Blog.timestamp)
-    return render_template('blog_overview.html', title='Blog', posts=all_posts)
+    return render_template('blog_overview.html', title='Blog', posts=all_posts, menu=menu())
 
 @app.route('/login', methods = ['GET'])
 def login():
@@ -128,9 +128,31 @@ def view_page(id):
         ### TODO return 404 
         pass
     else:
-        return render_template('view_page.html', page=page)
+        return render_template('view_page.html', page=page, menu=menu())
     
 
 @lm.user_loader
 def user_loder(id):
     return models.User.query.get(int(id))
+
+def menu():
+    index_page = { 
+            'menu_display' : 'Home', \
+            'menu_url' : url_for('index')
+            }
+    pages = models.Page.query.order_by(models.Page.id)
+    menu = []
+    menu.append(index_page)
+    for page in pages:
+        menu_item = { 'menu_display' : page.title, \
+                'menu_url' : url_for('view_page', id=page.id)}
+        menu.append(menu_item)
+    blog_page = {
+            'menu_display' : 'Blog', \
+            'menu_url' : url_for('show_blog')}
+    menu.append(blog_page)
+    return menu
+                
+
+
+

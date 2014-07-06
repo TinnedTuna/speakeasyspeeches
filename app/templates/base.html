@@ -8,19 +8,35 @@
             Welcome to SpeakEasy Speeches
         {% endif %}
         </title>
+        <!-- Latest compiled and minified CSS -->
+        <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
+
+        <!-- Optional theme -->
+        <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap-theme.min.css">
+
+        <!-- Latest compiled and minified JavaScript -->
+        <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
     </head>
     {% with messages = get_flashed_messages() %}
     {% if messages %}
-    <div class=".messages">
-        <ul>
-            {% for msg in messages %}
-            <li>{{msg}}</li>
-            {% endfor %}
-        </ul>
+    {% for msg in messages %}
+    <div class="alert alert-warning" role="alert">{{msg}}</div>
+    {% endfor %}
     </div>
     {% endif %}
     {% endwith %}
     <body>
+        <div class="jumbotron">
+            <h1>SpeakEasy Speeches</h1>
+            <p>Word-perfect speeches for any occassion.</p>
+        </div>
+        {% if menu %}
+        <ul class="nav nav-tabs" tole="tablist">
+            {% for menu_item in menu %}
+            <li><a href='{{menu_item.menu_url}}'>{{menu_item.menu_display}}</a></li>
+            {% endfor %}
+        </ul>
+        {% endif %}
         {% block content %}{% endblock %}
     </body>
 </html>
