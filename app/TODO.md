@@ -15,3 +15,4 @@ SpeakEasy Speeches Todo List
   9. Testing
   10. Signout button.
   11. Deployment
+    - Config?

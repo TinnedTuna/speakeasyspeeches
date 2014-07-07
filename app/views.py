@@ -227,6 +227,9 @@ def users():
 def buy():
     return view_page(1)
 
+@app.route('/contact')
+def contact():
+    return view_page(1)
 
 @lm.user_loader
 def user_loder(id):
@@ -241,11 +244,15 @@ def menu(active_id=None):
         if active_id is not None:
             menu_item["active"] = active_id == page.id
         menu.append(menu_item)
+    contact_page = {
+            'menu_display' : 'Contact',\
+            'menu_url' : url_for('contact')}
     blog_page = {
             'menu_display' : 'Blog', \
             'menu_url' : url_for('show_blog')}
     if (active_id is None):
         blog_page["active"] = True
+    menu.append(contact_page)
     menu.append(blog_page)
     return menu
                 
