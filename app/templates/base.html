@@ -29,19 +29,40 @@
     <body>
         {% if menu %}
         <div class="container">
-            <nav class="collapse navbar-collapse bs-navbar-collapse" role="navigation">
-                <ul class="nav navbar-nav">
-                    {% for menu_item in menu %}
-                    <li><a href='{{menu_item.menu_url}}'>{{menu_item.menu_display}}</a></li>
-                    {% endfor %}
-                </ul>
-            </nav>
+            <div class="row"> 
+                <div class="col-md-11">
+                    <nav class="collapse navbar-collapse bs-navbar-collapse" role="navigation">
+                        <ul class="nav navbar-nav">
+                            {% for menu_item in menu %}
+                                {% if menu_item.active %}
+                                    <li class="active">
+                                {% else %}
+                                    <li>
+                                {% endif %}
+                            <a href='{{menu_item.menu_url}}'>{{menu_item.menu_display}}</a></li>
+                            {% endfor %}
+                        </ul>
+                    </nav>
+                </div>
+                <div class="col-md-1">
+                    <div class="btn-group">
+                        <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
+                          Admin <span class="caret"></span>
+                        </button>
+                        <ul class="dropdown-menu" role="menu">
+                            <li><a href="{{ url_for('users') }}">Users</a></li>
+                            <li><a href="{{ url_for('show_create_page') }}">Create Page</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
         </div>
         {% endif %}
         <div class="jumbotron">
             <div class="container">
                 <h1>SpeakEasy Speeches</h1>
                 <p>Word-perfect speeches for any occassion.</p>
+                <p><a class="btn btn-primary btn-lg" role="button" href="{{ url_for('buy') }}">Order Now</a></p>
             </div>
         </div>
         <div class="container">

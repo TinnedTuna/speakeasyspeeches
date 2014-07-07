@@ -125,7 +125,7 @@ def show_edit_page(id):
     else:
         form.title.data = page.title
         form.content.data = page.content
-        return render_template('edit_page.html', form=form, page_id=page.id, menu=menu())
+        return render_template('edit_page.html', form=form, page_id=page.id, menu=menu(page.id))
 
 @app.route('/page/edit/<id>', methods= ['POST'])
 @login_required
@@ -140,7 +140,7 @@ def edit_page(id):
         db.session.add(existing_page)
         db.session.commit()
         flash("Page updated")
-        return render_template('view_page.html', page=existing_page, title=existing_page.title, menu=menu(), user=current_user)
+        return render_template('view_page.html', page=existing_page, title=existing_page.title, menu=menu(page.id), user=current_user)
 
 @app.route('/page/create', methods = ['GET'])
 @login_required
@@ -154,7 +154,7 @@ def view_page(id):
     if page is None:
         abort(404)
     else:
-        return render_template('view_page.html', page=page, menu=menu(), title=page.title)
+        return render_template('view_page.html', page=page, menu=menu(page.id), title=page.title)
 
 @app.route('/user/create', methods=['GET'])
 @login_required
@@ -214,24 +214,38 @@ def edit_user(id):
         db.session.add(existing_user)
         db.session.commit()
         flash("User update was successful")
-        return show_edit_user(id)
+        return users() 
 
+@app.route('/users', methods=['GET'])
+@login_required
+def users():
+    users = models.User.query.all()
+    return render_template("view_users.html", menu=menu(), users=users, title="Users")
+
+
+@app.route('/buy')
+def buy():
+    return view_page(1)
 
 
 @lm.user_loader
 def user_loder(id):
     return models.User.query.get(int(id))
 
-def menu():
+def menu(active_id=None):
     pages = models.Page.query.order_by(models.Page.id)
     menu = []
     for page in pages:
         menu_item = { 'menu_display' : page.title, \
                 'menu_url' : url_for('view_page', id=page.id)}
+        if active_id is not None:
+            menu_item["active"] = active_id == page.id
         menu.append(menu_item)
     blog_page = {
             'menu_display' : 'Blog', \
             'menu_url' : url_for('show_blog')}
+    if (active_id is None):
+        blog_page["active"] = True
     menu.append(blog_page)
     return menu
                 

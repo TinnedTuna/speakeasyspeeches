@@ -13,6 +13,7 @@ SpeakEasy Speeches Todo List
   6. Add "edit post" button onto blog posts.
   7. Ensure that "edit *" buttons only show for authenticated users.
   8. Refactor into Blueprints (http://flask.pocoo.org/docs/blueprints)
+  9. Order page
   9. Testing
   10. Signout button.
   11. Deployment
