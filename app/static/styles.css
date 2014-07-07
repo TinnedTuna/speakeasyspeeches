@@ -27,3 +27,7 @@ div .btn-page-edit a {
 .footer .container {
     margin-top: 1.4em;
 }
+
+.menu-active {
+    background-color : #EEE;
+}

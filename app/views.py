@@ -15,7 +15,8 @@ def view_blog_post(id):
     if post is None:
         abort(404)
     else:
-        return render_template("view_blog.html", user=current_user, menu=menu(), post=post, title=post.title)
+        return render_template("view_blog.html", user=current_user, \
+                menu=menu(blog_menu_location()), post=post, title=post.title)
 
 @app.route('/blog/post/<id>', methods=['GET'])
 @login_required
@@ -26,7 +27,9 @@ def show_edit_post(id):
         abort(404)
     form.title.data = post.title
     form.content.data = post.content
-    return render_template("edit_blog.html", form=form, user=current_user, menu=menu(), post=post, post_id=post.id, title="Editing %s" %(post.title))
+    return render_template("edit_blog.html", form=form, user=current_user,\
+            menu=menu(blog_menu_location()), post=post, post_id=post.id, \
+            title="Editing %s" %(post.title))
 
 @app.route('/blog/post/<id>', methods=['POST'])
 @login_required
@@ -66,12 +69,12 @@ def create_blog_post():
 @login_required
 def show_create_blog_post():
     form = BlogPost()
-    return render_template('edit_blog.html', title='Create Blog', form=form, menu=menu())
+    return render_template('edit_blog.html', title='Create Blog', form=form, menu=menu(blog_menu_location()))
 
 @app.route('/blog', methods=['GET'])
 def show_blog():
     all_posts = models.Blog.query.order_by(models.Blog.timestamp.desc())
-    return render_template('blog_overview.html', title='Blog', posts=all_posts, menu=menu())
+    return render_template('blog_overview.html', title='Blog', posts=all_posts, menu=menu(blog_menu_location()))
 
 @app.route('/login', methods = ['GET'])
 def login():
@@ -250,12 +253,16 @@ def menu(active_id=None):
     blog_page = {
             'menu_display' : 'Blog', \
             'menu_url' : url_for('show_blog')}
-    if (active_id is None):
+    if (active_id == len(menu) + 1):
+        contact_page["active"] = True
+    if (active_id == len(menu) + 2):
         blog_page["active"] = True
     menu.append(contact_page)
     menu.append(blog_page)
     return menu
                 
+def blog_menu_location():
+    return len(models.Page.query.all()) + 2
 
 @app.errorhandler(404)
 def handle404(error):
