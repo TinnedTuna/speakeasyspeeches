@@ -2,3 +2,7 @@
 *.pyc
 *.pyo
 *~
+env/*
+openshift-details.txt
+app.db
+*.swp

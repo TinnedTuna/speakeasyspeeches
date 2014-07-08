@@ -268,3 +268,6 @@ def blog_menu_location():
 def handle404(error):
     return render_template("404.html", menu=menu())
 
+@app.errorhandler(401)
+def handle401(error):
+    return render_template("401.html", menu=menu())

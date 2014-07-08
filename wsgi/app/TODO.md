@@ -6,7 +6,6 @@ SpeakEasy Speeches Todo List
   3. Contact Page
   4. Styling
     - Blog and posts
-    - Active tab menu bg is not greyed out?
     - We have no scroll bar for long pages. What is up with that?
   5. Add "edit post" button onto blog posts.
   6. Ensure that "edit *" buttons only show for authenticated users.
@@ -14,5 +13,7 @@ SpeakEasy Speeches Todo List
   8. Order page
   9. Testing
   10. Signout button.
-  11. Deployment
+  11. SSL
+  12. Domain name (CNAME?) stuff?
+  12. Deployment
     - Config?
