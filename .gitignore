@@ -1,6 +1,4 @@
-env/*
-*.py[co]
-app.db
-*.swp
-openshift-details.txt
-
+.project
+*.pyc
+*.pyo
+*~
