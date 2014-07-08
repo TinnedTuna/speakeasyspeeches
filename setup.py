@@ -1,8 +1,8 @@
 from setuptools import setup
 
-setup(name='YourAppName',
+setup(name='SpeakEasy-Speeches',
       version='1.0',
-      description='SpeakEasy Speeches',
+      description='SpeakEasy Speeches Website',
       author='Dan Turner',
       author_email='tunafish25@gmail.com',
       url='http://www.python.org/sigs/distutils-sig/',
