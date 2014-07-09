@@ -20,3 +20,4 @@ SpeakEasy Speeches Todo List
   9. Domain name (CNAME?) stuff?
   10. Deployment
     - Config, secure environment vars for sessions, stripe API tokens?
+  11. Password reset
