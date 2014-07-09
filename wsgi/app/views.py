@@ -153,7 +153,11 @@ def edit_page(id):
         db.session.add(existing_page)
         db.session.commit()
         flash("Page updated")
-        return render_template('view_page.html', page=existing_page, title=existing_page.title, menu=menu(page.id), user=current_user)
+        return render_template('view_page.html',\
+                page=existing_page,\
+                title=existing_page.title,\
+                menu=menu(existing_page.id),\
+                user=current_user)
 
 @app.route('/page/create', methods = ['GET'])
 @login_required
