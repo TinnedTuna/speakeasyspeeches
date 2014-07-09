@@ -7,9 +7,8 @@ from views import pages
 app = Flask(__name__)
 app.config.from_object("config")
 app.register_blueprint(pages)
-db = SQLAlchemy(app)
+
 bcrypt = Bcrypt(app)
 lm = LoginManager()
 lm.init_app(app)
 
-from app import views, models
