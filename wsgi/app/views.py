@@ -1,5 +1,5 @@
-from flask import render_template, flash, redirect, url_for, abort
-from flask.ext.login import login_user, current_user, login_required
+from flask import render_template, flash, redirect, url_for, abort, g
+from flask.ext.login import login_user, current_user, login_required, logout_user
 from forms import LoginForm, CreatePage, BlogPost, UserForm
 from app import db, app, lm, models, bcrypt
 import datetime
@@ -8,6 +8,10 @@ import datetime
 @app.route('/index')
 def index():
     return view_page(1)
+
+@app.before_request
+def before_request():
+    g.user = current_user
 
 @app.route('/blog/<id>')
 def view_blog_post(id):
@@ -81,6 +85,12 @@ def login():
     form = LoginForm()
     return render_template('login.html', title='Login', form=form, menu=menu())
 
+@app.route('/logout')
+def logout():
+    logout_user()
+    flash("You are now logged out.")
+    return index()
+
 @app.route('/authenticate', methods = ['POST'])
 def authenticate():
     form = LoginForm()
@@ -88,17 +98,17 @@ def authenticate():
         user = models.User.query.filter_by(username=form.username.data).first()
         if user is None:
             flash("Error, incorrect username or password")
-            return render_template('login.html', title='Login', form=form, error=True)
+            return render_template('login.html', title='Login', form=form, menu=menu())
         if bcrypt.check_password_hash(user.password, form.password.data):
             login_user(user)
-            flash('Login was successful for %s' % (repr(user)))
+            flash('Login was successful for %s' % (repr(user.display_name)))
             return redirect("/index")
         else:
             flash("Error, incorrect username or password")
-            return render_template('login.html', title='Login', form=form, error=True)
+            return render_template('login.html', title='Login', form=form, menu=menu())
     else:
         flash("Error, incorrect username or password")
-        return render_template('login.html', title='Login', form=form, error=True)
+        return render_template('login.html', title='Login', form=form, menu=()) 
 
 @app.route('/page/create', methods = ['POST'])
 @login_required
