@@ -24,7 +24,14 @@ app.register_blueprint(users_blueprint)
 from speakeasy.views.authentication import auth
 app.register_blueprint(auth)
 
+from speakeasy.views.config import config_blueprint
+app.register_blueprint(config_blueprint)
+
 @app.route("/")
 @app.route("/index")
 def index():
-    return redirect(url_for("pages.view_page", id=1))
+    current_conf = speakeasy.views.utils.site_config()
+    default_page = current_conf.index_page_id 
+    if default_page is None:
+        default_page = 1
+    return redirect(url_for("pages.view_page", id=default_page))

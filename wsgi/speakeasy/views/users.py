@@ -4,7 +4,7 @@ import speakeasy
 from speakeasy import bcrypt
 from speakeasy.database import User, db_session
 from speakeasy.forms import UserForm
-from speakeasy.views.utils import menu
+from speakeasy.views.utils import menu, site_config
 
 import datetime
 
@@ -18,7 +18,7 @@ users_blueprint = Blueprint('users', __name__,
 def users():
     users = User.query.all()
     return render_template("view_users.html", menu=menu(),\
-            users=users, title="Users")
+            users=users, title="Users", site_config=site_config())
 
 @users_blueprint.route('/edit/<id>', methods=['GET'])
 @login_required
@@ -30,7 +30,8 @@ def show_edit_user(id):
         form = UserForm()
         form.username.data = user.username
         form.display_name.data = user.display_name
-        return render_template('edit_user.html', menu=menu(), form=form, user_id=user.id)
+        return render_template('edit_user.html', menu=menu(), form=form, user_id=user.id, \
+                site_config=site_config())
 
 @users_blueprint.route('/create', methods=['POST'])
 @login_required
@@ -54,7 +55,8 @@ def create_user():
         db_session.add(new_user)
         db_session.commit()
         flash("User was created successfully!")
-        return render_template('edit_user.html', menu=menu(), form=form, user_id=new_user.id)
+        return render_template('edit_user.html', menu=menu(), form=form, user_id=new_user.id, \
+                site_config=site_config())
 
 @users_blueprint.route('/edit/<id>', methods=['POST'])
 @login_required
@@ -82,4 +84,5 @@ def edit_user(id):
 @login_required
 def show_create_user():
         form = UserForm()
-        return render_template('edit_user.html', menu=menu(), form=form)
+        return render_template('edit_user.html', menu=menu(), form=form, \
+                site_config=site_config())

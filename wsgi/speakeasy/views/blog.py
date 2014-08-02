@@ -3,7 +3,7 @@ from flask.ext.login import login_required, current_user
 import speakeasy
 from speakeasy.database import Blog, db_session
 from speakeasy.forms import BlogPost
-from speakeasy.views.utils import menu, blog_menu_location
+from speakeasy.views.utils import menu, blog_menu_location, site_config
 
 
 import datetime
@@ -18,13 +18,15 @@ def view_blog_post(id):
         abort(404)
     else:
         return render_template("view_blog.html", user=current_user, \
-                menu=menu(blog_menu_location()), post=post, title=post.title)
+                menu=menu(blog_menu_location()), post=post, title=post.title, \
+                site_config=site_config())
 
 @blog.route('/')
 def view_blog():
     posts = Blog.query.order_by(Blog.timestamp.desc()).all()
     return render_template('blog_overview.html', user=current_user, \
-            menu=menu(blog_menu_location()), posts=posts, title="Blog")
+            menu=menu(blog_menu_location()), posts=posts, title="Blog",\
+            site_config=site_config())
 
 @blog.route('/post/<id>', methods=['GET'])
 @login_required
@@ -37,14 +39,15 @@ def show_edit_post(id):
     form.content.data = post.content
     return render_template("edit_blog.html", form=form, user=current_user,\
             menu=menu(blog_menu_location()), post=post, post_id=post.id, \
-            title="Editing %s" %(post.title))
+            title="Editing %s" %(post.title), \
+            site_config=site_config())
 
 @blog.route('/post', methods=['GET'])
 @login_required
 def show_create_post():
     form = BlogPost() 
     return render_template("edit_blog.html", form=form, \
-            user=current_user, menu=menu(blog_menu_location()))
+            user=current_user, menu=menu(blog_menu_location()), site_config=site_config())
 
 @blog.route('/post/<id>', methods=['POST'])
 @login_required
@@ -80,4 +83,4 @@ def create_blog_post():
     else:
         flash("Failed to post, user input validation failed.")
         return render_template("edit_blog.html", form=form, \
-                user=current_user, menu=menu(blog_menu_location()))
+                user=current_user, menu=menu(blog_menu_location()), site_config=site_config())

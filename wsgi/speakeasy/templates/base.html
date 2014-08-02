@@ -3,9 +3,9 @@
     <head>
         <title>
         {% if title %}
-            SpeakEasy -- {{title}}
+            {{ site_config.site_title }} -- {{title}}
         {% else %}
-            Welcome to SpeakEasy Speeches
+            {{ site_config.site_title }}
         {% endif %}
         </title>
         <!-- Apparently we need jquery? -->
@@ -52,6 +52,7 @@
                                 <li><a href="{{ url_for('users.users') }}">Users</a></li>
                                 <li><a href="{{ url_for('pages.show_create_page') }}">Create Page</a></li>
                                 <li><a href="{{ url_for('blog.create_blog_post') }}">New Blog Post</a></li>
+                                <li><a href="{{ url_for('config.view_config') }}">Site Config</a></li>
                                 <li class="divider"></li>
                                 <li><a href="{{ url_for('auth.logout') }}">Logout</a></li>
                             </ul>
@@ -64,8 +65,8 @@
         {% endif %}
         <div class="jumbotron">
             <div class="container">
-                <h1>SpeakEasy Speeches</h1>
-                <p>Talking tonic for the tongue-tied</p>
+                <h1>{{ site_config.site_display_name }}</h1>
+                <p>{{ site_config.site_strap_line }}</p>
                 <p><a class="btn btn-primary btn-lg" role="button" href="#">Order Now</a></p>
             </div>
         </div>

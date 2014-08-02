@@ -2,7 +2,7 @@ from flask import Blueprint, render_template, abort, flash
 from flask.ext.login import login_required, current_user
 import speakeasy
 from speakeasy.database import Page, db_session
-from speakeasy.views.utils import menu
+from speakeasy.views.utils import menu, site_config
 from speakeasy.forms import CreatePage
 
 import datetime
@@ -10,7 +10,7 @@ import datetime
 pages = Blueprint('pages', __name__,
         template_folder='templates', url_prefix='/page')
 
-@pages.route('/create', methods = ['GET'])
+@pages.route('/create', methods = ['POST'])
 @login_required
 def create_page():
     form = CreatePage()
@@ -24,12 +24,12 @@ def create_page():
                 db_session.add(new_page)
                 db_session.commit()
                 flash("Page successfully created.")
-                return render_template('index.html', user=current_user, menu=menu())
+                return render_template('index.html', user=current_user, menu=menu(), site_config=site_config())
             else:
                 flash('Could not create page, a page with that title already exists')
-                return render_template('edit_page.html', form=form, menu=menu())
+                return render_template('edit_page.html', form=form, menu=menu(), site_config=site_config())
 
-@pages.route('/edit/<id>', methods = ['GET'])
+@pages.route('/edit/<id>', methods = ['POST'])
 @login_required
 def show_edit_page(id):
     form = CreatePage()
@@ -39,7 +39,7 @@ def show_edit_page(id):
     else:
         form.title.data = page.title
         form.content.data = page.content
-        return render_template('edit_page.html', form=form, page_id=page.id, menu=menu(page.id))
+        return render_template('edit_page.html', form=form, page_id=page.id, menu=menu(page.id), site_config=site_config())
 
 @pages.route('/edit/<id>', methods= ['POST'])
 @login_required
@@ -58,13 +58,14 @@ def edit_page(id):
                 page=existing_page,\
                 title=existing_page.title,\
                 menu=menu(existing_page.id),\
-                user=current_user)
+                user=current_user,\
+                site_config=site_config())
 
 @pages.route('/create', methods = ['GET'])
 @login_required
 def show_create_page():
     form = CreatePage()
-    return render_template('edit_page.html', form=form, menu=menu())
+    return render_template('edit_page.html', form=form, menu=menu(), site_config=site_config())
 
 @pages.route('/<id>', methods = ['GET'])
 def view_page(id):
@@ -72,4 +73,4 @@ def view_page(id):
     if page is None:
         abort(404)
     else:
-        return render_template('view_page.html', page=page, menu=menu(page.id), title=page.title)
+        return render_template('view_page.html', page=page, menu=menu(page.id), title=page.title, site_config=site_config())

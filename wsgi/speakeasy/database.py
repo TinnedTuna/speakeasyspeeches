@@ -1,7 +1,7 @@
 from datetime import datetime
 
 from sqlalchemy import create_engine, Column, Integer, String, Text, \
-        DateTime, ForeignKey
+        DateTime, ForeignKey, Boolean
 from sqlalchemy.orm import scoped_session, sessionmaker, backref, relation
 from sqlalchemy.ext.declarative import declarative_base
 
@@ -80,3 +80,20 @@ class Blog(Model):
     def short_content(self):
         return self.rendered_content()[:200]
 
+class Config(Model):
+    __tablename__ = "config"
+
+    id = Column(Integer, primary_key=True)
+
+    site_title = Column(Text, nullable=False)
+    site_display_name = Column(Text, nullable=False)
+    site_strap_line = Column(Text, nullable=False)
+
+    index_page_id = Column(Integer, ForeignKey('page.id'))
+
+    mail_server = Column(Text)
+    mail_port = Column(Integer)
+    mail_username = Column(Text)
+    mail_password = Column(Text)
+    mail_use_tls = Column(Boolean)
+    mail_enable = Column(Boolean)

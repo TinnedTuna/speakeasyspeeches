@@ -1,6 +1,6 @@
 from flask import url_for, render_template, g
 from flask.ext.login import current_user
-from speakeasy.database import Page, User
+from speakeasy.database import Page, User, Config
 from speakeasy import app, lm
 
 def menu(active_id=None):
@@ -30,13 +30,25 @@ def menu(active_id=None):
 def blog_menu_location():
     return len(Page.query.all()) + 2
 
+def site_config():
+    site_database_config = Config.query.first()
+    if site_database_config is None:
+        # We return default config
+        default_config = Config()
+        default_config.site_title = 'BottledCMS'
+        default_config.site_display_name = 'BottledCMS'
+        default_config.site_strap_line = 'A Fresh install of BottledCMS'
+        return default_config
+    else:
+        return site_database_config
+
 @app.errorhandler(404)
 def handle404(error):
-    return render_template("404.html", menu=menu())
+    return render_template("404.html", menu=menu(), site_config=site_config())
 
 @app.errorhandler(401)
 def handle401(error):
-    return render_template("401.html", menu=menu())
+    return render_template("401.html", menu=menu(), site_config=site_config())
 
 @app.before_request
 def before_request():
