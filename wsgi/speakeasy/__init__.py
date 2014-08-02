@@ -13,6 +13,9 @@ lm.init_app(app)
 import speakeasy.views.utils
 from speakeasy.views.pages import pages
 app.register_blueprint(pages)
+
+from speakeasy.views.blog import blog
+app.register_blueprint(blog)
 print("registered blueprint: " + repr(pages))
 print("Application: " + repr(app))
 print("Blueprints: " + repr(app.blueprints))

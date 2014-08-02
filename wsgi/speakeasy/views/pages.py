@@ -3,8 +3,6 @@ from flask.ext.login import login_required
 import speakeasy
 from speakeasy.database import Page
 from speakeasy.views.utils import menu
-#from speakeasy.forms import CreatePage
-#from speakeasy.database import db_session, Page
 
 import datetime
 

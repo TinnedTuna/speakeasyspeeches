@@ -1,22 +1,27 @@
-from flask import url_for
+from flask import url_for, render_template
 from speakeasy.database import Page
 from speakeasy import app
 
 def menu(active_id=None):
     pages = Page.query.order_by(Page.id)
     menu = []
+    """
+
     for page in pages:
         menu_item = { 'menu_display' : page.title, \
                 'menu_url' : url_for('view_page', id=page.id)}
         if active_id is not None:
             menu_item["active"] = active_id == page.id
         menu.append(menu_item)
+    """
     contact_page = {
             'menu_display' : 'Contact',\
-            'menu_url' : url_for('contact')}
+            'menu_url' : '/contact'}
+            #'menu_url' : url_for('contact')}
     blog_page = {
             'menu_display' : 'Blog', \
-            'menu_url' : url_for('show_blog')}
+            'menu_url' : '/blog'}
+            #'menu_url' : url_for('show_blog')}
     if (active_id == len(menu) + 1):
         contact_page["active"] = True
     if (active_id == len(menu) + 2):
