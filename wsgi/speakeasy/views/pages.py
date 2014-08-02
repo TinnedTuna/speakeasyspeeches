@@ -23,6 +23,7 @@ def create_page():
                         timestamp=datetime.datetime.now())
                 db_session.add(new_page)
                 db_session.commit()
+                flash("Page successfully created.")
                 return render_template('index.html', user=current_user, menu=menu())
             else:
                 flash('Could not create page, a page with that title already exists')

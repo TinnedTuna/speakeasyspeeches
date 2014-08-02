@@ -1,4 +1,4 @@
-from flask import Blueprint, render_template, abort, flash
+from flask import Blueprint, render_template, abort, flash, redirect, url_for
 from flask.ext.login import login_required, current_user
 import speakeasy
 from speakeasy.database import Blog, db_session
@@ -22,7 +22,7 @@ def view_blog_post(id):
 
 @blog.route('/')
 def view_blog():
-    posts = Blog.query.all()
+    posts = Blog.query.order_by(Blog.timestamp.desc()).all()
     return render_template('blog_overview.html', user=current_user, \
             menu=menu(blog_menu_location()), posts=posts, title="Blog")
 
@@ -38,6 +38,13 @@ def show_edit_post(id):
     return render_template("edit_blog.html", form=form, user=current_user,\
             menu=menu(blog_menu_location()), post=post, post_id=post.id, \
             title="Editing %s" %(post.title))
+
+@blog.route('/post', methods=['GET'])
+@login_required
+def show_create_post():
+    form = BlogPost() 
+    return render_template("edit_blog.html", form=form, \
+            user=current_user, menu=menu(blog_menu_location()))
 
 @blog.route('/post/<id>', methods=['POST'])
 @login_required
@@ -67,3 +74,10 @@ def create_blog_post():
                 content=form.content.data, \
                 timestamp=datetime.datetime.now())
         db_session.add(new_post)
+        db_session.commit()
+        flash("New blog post successfully posted.")
+        return view_blog() 
+    else:
+        flash("Failed to post, user input validation failed.")
+        return render_template("edit_blog.html", form=form, \
+                user=current_user, menu=menu(blog_menu_location()))

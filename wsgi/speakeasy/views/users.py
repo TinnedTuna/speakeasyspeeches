@@ -1,8 +1,9 @@
-from flask import Blueprint, render_template, abort
+from flask import Blueprint, render_template, abort, flash, redirect, url_for
 from flask.ext.login import login_required, current_user
 import speakeasy
 from speakeasy import bcrypt
-from speakeasy.database import User 
+from speakeasy.database import User, db_session
+from speakeasy.forms import UserForm
 from speakeasy.views.utils import menu
 
 import datetime
@@ -50,8 +51,8 @@ def create_user():
             flash("The supplied passwords did not match.")
             return show_create_user()
         new_user.password = bcrypt.generate_password_hash(form.new_password.data)
-        db.session.add(new_user)
-        db.session.commit()
+        db_session.add(new_user)
+        db_session.commit()
         flash("User was created successfully!")
         return render_template('edit_user.html', menu=menu(), form=form, user_id=new_user.id)
 
@@ -68,5 +69,17 @@ def edit_user(id):
         if form.new_password.data is not None and form.new_password.data != "" and form.new_password.data == form.confirm_password.data:
             new_hash = bcrypt.generate_password_hash(form.new_password.data)
             existing_user.password = new_hash
-        db.session.add(existing_user)
+        db_session.add(existing_user)
+        db_session.commit()
+        flash("Update success.")
+        return redirect(url_for('users.show_edit_user', id=existing_user.id))
+    else:
+        flash("Could not update user, input failed to validate.")
+        return redirect(url_for('users.show_edit_user', id=existing_user.id))
 
+
+@users_blueprint.route('/create', methods=['GET'])
+@login_required
+def show_create_user():
+        form = UserForm()
+        return render_template('edit_user.html', menu=menu(), form=form)

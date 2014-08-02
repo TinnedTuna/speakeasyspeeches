@@ -18,3 +18,4 @@ SpeakEasy Speeches Todo List
   10. Deployment
     - Config, secure environment vars for sessions, stripe API tokens?
   11. Password reset
+  12. Logging
