@@ -1,6 +1,7 @@
 from flask import Blueprint, render_template, abort
 from flask.ext.login import login_required, current_user
 import speakeasy
+from speakeasy import bcrypt
 from speakeasy.database import User 
 from speakeasy.views.utils import menu
 

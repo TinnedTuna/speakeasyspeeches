@@ -9,8 +9,6 @@ import datetime
 pages = Blueprint('pages', __name__,
         template_folder='templates', url_prefix='/page')
 
-print("Got pages.py")
-
 @pages.route('/create', methods = ['GET'])
 @login_required
 def create_page():

@@ -1,7 +1,7 @@
 from flask import Flask
 from flask.ext.sqlalchemy import SQLAlchemy
 from flask.ext.bcrypt import Bcrypt
-from flask.ext.login import LoginManager
+from flask.ext.login import LoginManager, current_user
 
 app = Flask(__name__)
 app.config.from_object("config")
@@ -9,6 +9,7 @@ app.config.from_object("config")
 bcrypt = Bcrypt(app)
 lm = LoginManager()
 lm.init_app(app)
+
 
 import speakeasy.views.utils
 from speakeasy.views.pages import pages
@@ -22,8 +23,4 @@ app.register_blueprint(users_blueprint)
 
 from speakeasy.views.authentication import auth
 app.register_blueprint(auth)
-print("Application: " + repr(app))
-print("Blueprints: " + repr(app.blueprints))
-print("View functions: " + repr(app.view_functions))
 
-from speakeasy.database import Page, db_session

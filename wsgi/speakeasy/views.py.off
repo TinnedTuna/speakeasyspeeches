@@ -4,48 +4,6 @@ from forms import LoginForm, CreatePage, BlogPost, UserForm
 from app import db, app, lm, models, bcrypt
 import datetime
 
-@app.route('/')
-@app.route('/index')
-def index():
-    return view_page(1)
-
-@app.before_request
-def before_request():
-    g.user = current_user
-@app.route('/logout')
-def logout():
-    logout_user()
-    flash("You are now logged out.")
-    return index()
-
-@app.route('/authenticate', methods = ['POST'])
-def authenticate():
-    form = LoginForm()
-    if form.validate_on_submit():
-        user = models.User.query.filter_by(username=form.username.data).first()
-        if user is None:
-            flash("Error, incorrect username or password")
-            return render_template('login.html', title='Login', form=form, menu=menu())
-        if bcrypt.check_password_hash(user.password, form.password.data):
-            login_user(user)
-            flash('Login was successful for %s' % (repr(user.display_name)))
-            return redirect("/index")
-        else:
-            flash("Error, incorrect username or password")
-            return render_template('login.html', title='Login', form=form, menu=menu())
-    else:
-        flash("Error, incorrect username or password")
-        return render_template('login.html', title='Login', form=form, menu=()) 
-
-
-@app.route('/buy')
-def buy():
-    return view_page(1)
-
-@app.route('/contact')
-def contact():
-    return view_page(1)
-
 @lm.user_loader
 def user_loder(id):
     return models.User.query.get(int(id))

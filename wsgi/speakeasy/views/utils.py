@@ -1,6 +1,7 @@
-from flask import url_for, render_template
-from speakeasy.database import Page
-from speakeasy import app
+from flask import url_for, render_template, g
+from flask.ext.login import current_user
+from speakeasy.database import Page, User
+from speakeasy import app, lm
 
 def menu(active_id=None):
     pages = Page.query.order_by(Page.id)
@@ -40,3 +41,15 @@ def handle404(error):
 @app.errorhandler(401)
 def handle401(error):
     return render_template("401.html", menu=menu())
+
+@app.before_request
+def before_request():
+    if current_user is None:
+        print "current_user is None"
+    else:
+        print "current_user is " + str(current_user)
+    g.user = current_user
+
+@lm.user_loader
+def user_loader(id):
+    return User.query.get(int(id))
