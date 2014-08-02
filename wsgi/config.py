@@ -10,5 +10,10 @@ if 'OPENSHIFT_POSTGRESQL_DB_URL' in os.environ:
 SQLALCHEMY_MIGRATE_REPO = os.path.join(basedir,'db_repository')
 
 CSRF_ENABLED = True
+
+# Hard coded value for testing
 SECRET_KEY = "ok0RNUBXEG6n8k4h"
+
+if 'OPENSHIFT_SECRET_TOKEN' in os.environ:
+    SECRET_KEY = os.environ['OPENSHIFT_SECRET_TOKEN']
 

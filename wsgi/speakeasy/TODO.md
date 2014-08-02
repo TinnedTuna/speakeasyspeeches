@@ -9,10 +9,7 @@ SpeakEasy Speeches Todo List
     - Styling for the titles, on both view-long form, and overview
     - Maybe, preview button on the edit/create screen?
   4. Refactor into Blueprints (http://flask.pocoo.org/docs/blueprints)
-    - Pages
-    - Blog posts
     - Contact page
-    - Users
   5. Order page
   6. Full-Text search
   7. Testing
@@ -21,3 +18,4 @@ SpeakEasy Speeches Todo List
   10. Deployment
     - Config, secure environment vars for sessions, stripe API tokens?
   11. Password reset
+  12. Logging
