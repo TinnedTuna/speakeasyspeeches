@@ -1,4 +1,4 @@
-from flask import Flask
+from flask import Flask, redirect, url_for
 from flask.ext.sqlalchemy import SQLAlchemy
 from flask.ext.bcrypt import Bcrypt
 from flask.ext.login import LoginManager, current_user
@@ -24,3 +24,7 @@ app.register_blueprint(users_blueprint)
 from speakeasy.views.authentication import auth
 app.register_blueprint(auth)
 
+@app.route("/")
+@app.route("/index")
+def index():
+    return redirect(url_for("pages.view_page", id=1))

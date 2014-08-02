@@ -18,6 +18,12 @@ def view_blog_post(id):
         return render_template("view_blog.html", user=current_user, \
                 menu=menu(blog_menu_location()), post=post, title=post.title)
 
+@blog.route('/')
+def view_blog():
+    posts = Blog.query.all()
+    return render_template('blog_overview.html', user=current_user, \
+            menu=menu(blog_menu_location()), posts=posts, title="Blog")
+
 @blog.route('/post/<id>', methods=['GET'])
 @login_required
 def show_edit_post(id):

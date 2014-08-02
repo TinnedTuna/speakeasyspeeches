@@ -1,4 +1,4 @@
-from flask import Blueprint, render_template, abort, flash, redirect
+from flask import Blueprint, render_template, abort, flash, redirect, url_for
 from flask.ext.login import login_required, current_user, login_user, logout_user
 import speakeasy
 from speakeasy import bcrypt
@@ -22,7 +22,7 @@ def login():
 def logout():
     logout_user()
     flash("You are now logged out.")
-    return index()
+    return redirect(url_for('index'))
 
 @auth.route('/authenticate', methods = ['POST'])
 def authenticate():
