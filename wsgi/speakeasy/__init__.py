@@ -16,7 +16,12 @@ app.register_blueprint(pages)
 
 from speakeasy.views.blog import blog
 app.register_blueprint(blog)
-print("registered blueprint: " + repr(pages))
+
+from speakeasy.views.users import users_blueprint
+app.register_blueprint(users_blueprint)
+
+from speakeasy.views.authentication import auth
+app.register_blueprint(auth)
 print("Application: " + repr(app))
 print("Blueprints: " + repr(app.blueprints))
 print("View functions: " + repr(app.view_functions))

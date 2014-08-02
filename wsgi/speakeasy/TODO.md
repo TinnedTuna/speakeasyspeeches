@@ -9,9 +9,7 @@ SpeakEasy Speeches Todo List
     - Styling for the titles, on both view-long form, and overview
     - Maybe, preview button on the edit/create screen?
   4. Refactor into Blueprints (http://flask.pocoo.org/docs/blueprints)
-    - Blog posts
     - Contact page
-    - Users
   5. Order page
   6. Full-Text search
   7. Testing
