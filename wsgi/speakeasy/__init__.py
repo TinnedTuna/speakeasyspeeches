@@ -3,6 +3,10 @@ from flask.ext.sqlalchemy import SQLAlchemy
 from flask.ext.bcrypt import Bcrypt
 from flask.ext.login import LoginManager, current_user
 
+from pkgutil import extend_path 
+
+__path__ = extend_path(__path__, __name__)
+
 app = Flask(__name__)
 app.config.from_object("config")
 
