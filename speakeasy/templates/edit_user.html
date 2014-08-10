@@ -1,0 +1,22 @@
+{% extends "base.html" %}
+
+{% block content %}
+{% if user_id %}
+<h1>Edit User</h1>
+    <form action='/user/edit/{{user_id}}' method='post' name='edit_user'>
+{% else %}
+<h1>Create User</h1>
+    <form action='/user/create' method='post' name='create_user'>
+{% endif %}
+        {{form.hidden_tag()}}
+        <p>{{form.username(class='form-control', placeholder='Username')}}</p>
+        <p>{{form.display_name(class='form-control', placeholder='Display Name')}}</p>
+        {% if user_id %}
+            <p>{{form.new_password(class='form-control', placeholder='New Password (Optional)')}}</p>
+        {% else %}
+            <p>{{form.new_password(class='form-control', placeholder='New Password (Mandatory)')}}</p>
+        {% endif %}
+        <p>{{form.confirm_password(class='form-control', placeholder='Confirm Password')}}</p>
+        <button type='submit' class='btn pull-right'><span class='glyphicon glyphicon-floppy-disk'></span> Save User</button>
+    </form>
+{% endblock %}

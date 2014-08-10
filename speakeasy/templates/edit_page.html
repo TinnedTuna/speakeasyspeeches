@@ -1,0 +1,20 @@
+{% extends "base.html" %}
+
+{% block content %}
+{% if page_id %}
+<h1>Edit Page</h1>
+    <form action='/page/edit/{{page_id}}' method='post' name='edit_page'>
+{% else %}
+<h1>Create Page</h1>
+    <form action='/page/create' method='post' name='create_page'>
+{% endif %}
+        {{form.hidden_tag()}}
+        <p>{{form.title(class='form-control', placeholder='Title')}}</p>
+        {% if page_id %}
+        <p>{{form.content(class='form-control', rows='10')}}</p>
+        {% else %}
+        <p>{{form.content(class='form-control', rows='10', placeholder='Page Content')}}</p>
+        {% endif %}
+        <button type='submit' class='btn pull-right'><span class='glyphicon glyphicon-floppy-disk'></span> Save Page</button>
+    </form>
+{% endblock %}

@@ -1,0 +1,85 @@
+<!doctype html>
+<html>
+    <head>
+        <title>
+        {% if title %}
+            {{ site_config.site_title }} -- {{title}}
+        {% else %}
+            {{ site_config.site_title }}
+        {% endif %}
+        </title>
+        <!-- Apparently we need jquery? -->
+        <script src="//code.jquery.com/jquery-1.11.0.min.js"></script>
+
+        <!-- Latest compiled and minified CSS -->
+        <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css"/>
+
+        <!-- Optional theme -->
+        <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap-theme.min.css"/>
+
+        <!-- Latest compiled and minified JavaScript -->
+        <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
+        <link rel="stylesheet" href='{{ url_for("static", filename="styles.css") }}'/>
+    </head>
+    {% with messages = get_flashed_messages() %}
+    {% if messages %}
+    {% for msg in messages %}
+    <div class="alert alert-warning" role="alert">{{msg}}</div>
+    {% endfor %}
+    </div>
+    {% endif %}
+    {% endwith %}
+    <body>
+        {% if menu %}
+        <div class="container">
+            <div class="row"> 
+                <nav class="collapse navbar-collapse bs-navbar-collapse" role="navigation">
+                    <ul class="nav navbar-nav">
+                        {% for menu_item in menu %}
+                            {% if menu_item.active %}
+                                <li class="menu-active">
+                            {% else %}
+                                <li>
+                            {% endif %}
+                        <a href='{{menu_item.menu_url}}'>{{menu_item.menu_display}}</a></li>
+                        {% endfor %}
+                    </ul>
+                    {% if g.user and g.user.is_authenticated() %}
+                    <ul class="nav navbar-nav navbar-right">
+                        <li class="dropdown">
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown">Admin <span class="caret"></span></a>
+                            <ul class="dropdown-menu" role="menu">
+                                <li><a href="{{ url_for('users.users') }}">Users</a></li>
+                                <li><a href="{{ url_for('pages.show_create_page') }}">Create Page</a></li>
+                                <li><a href="{{ url_for('blog.create_blog_post') }}">New Blog Post</a></li>
+                                <li><a href="{{ url_for('config.view_config') }}">Site Config</a></li>
+                                <li class="divider"></li>
+                                <li><a href="{{ url_for('auth.logout') }}">Logout</a></li>
+                            </ul>
+                        </li>
+                    </ul>
+                    {% endif %}
+                </nav>
+            </div>
+        </div>
+        {% endif %}
+        <div class="jumbotron">
+            <div class="container">
+                <h1>{{ site_config.site_display_name }}</h1>
+                <p>{{ site_config.site_strap_line }}</p>
+                <p><a class="btn btn-primary btn-lg" role="button" href="#">Order Now</a></p>
+            </div>
+        </div>
+        <div class="container">
+            {% block content %}{% endblock %}
+        </div>
+        <!--
+        <div class="footer">
+            <div class="container">
+                <p class="text-muted">© SpeakEasy Speeches 2014</p>
+            </div>
+        </div>
+        -->
+    </body>
+</html>
+

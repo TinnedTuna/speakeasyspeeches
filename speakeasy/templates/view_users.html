@@ -1,0 +1,31 @@
+{% extends "base.html" %}
+
+{% block content %}
+<table class="table table-striped">
+    <div class="page-title row">
+        <div class="col-md-11">
+            <h2>{{title}}</h2>
+        </div>
+        <div class="col-md-1 btn-page-edit">
+            <a href="{{ url_for('users.show_create_user') }}" class="btn btn-default" role="button">
+                <span class="glyphicon glyphicon-pencil"></span> Create User</a>
+        </div>
+    </div>
+    <thead>
+        <tr>
+            <th>#</th>
+            <th>Display Name</th>
+            <th>Username</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for user in users %}
+        <tr>
+            <td>{{user.id}}</td>
+            <td>{{user.display_name}}</td>
+            <td><a href="{{ url_for('users.show_edit_user', id=user.id)}}">{{user.username}}</a></td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% endblock %}
