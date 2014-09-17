@@ -13,22 +13,26 @@ pages = Blueprint('pages', __name__,
 @login_required
 def create_page():
     form = CreatePage()
-    if form.validate_on_submit():
-            if Page.query.filter_by(title=form.title.data).first() is None:
-                new_page = Page( \
-                        title=form.title.data, \
-                        author_user_id=current_user.id, \
-                        content=form.content.data, \
-                        timestamp=datetime.datetime.now())
-                db_session.add(new_page)
-                db_session.commit()
-                flash("Page successfully created.")
-                return render_template('index.html', user=current_user, menu=menu(), site_config=site_config())
-            else:
-                flash('Could not create page, a page with that title already exists')
-                return render_template('edit_page.html', form=form, menu=menu(), site_config=site_config())
+    if not form.validate_on_submit():
+        flash("Failed to validate user input.")
+        return render_template('edit_page.html', form=form, menu=menu(),
+                site_config=site_config())
+    if Page.query.filter_by(title=form.title.data).first() is None:
+        new_page = Page( \
+                title=form.title.data, \
+                author_user_id=current_user.id, \
+                content=form.content.data, \
+                timestamp=datetime.datetime.now())
+        db_session.add(new_page)
+        db_session.commit()
+        flash("Page successfully created.")
+        return render_template('index.html', user=current_user, menu=menu(), site_config=site_config())
+    else:
+        flash('Could not create page, a page with that title already exists')
+        return render_template('edit_page.html', form=form, menu=menu(), site_config=site_config())
 
-@pages.route('/edit/<id>', methods = ['POST'])
+
+@pages.route('/edit/<id>', methods = ['GET'])
 @login_required
 def show_edit_page(id):
     form = CreatePage()

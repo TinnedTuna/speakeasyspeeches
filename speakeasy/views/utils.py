@@ -44,18 +44,16 @@ def site_config():
 
 @app.errorhandler(404)
 def handle404(error):
-    return render_template("404.html", menu=menu(), site_config=site_config())
+    return render_template("404.html", menu=menu(),  
+            site_config=site_config()), 404
 
 @app.errorhandler(401)
 def handle401(error):
-    return render_template("401.html", menu=menu(), site_config=site_config())
+    return render_template("401.html", menu=menu(), 
+            site_config=site_config()), 401
 
 @app.before_request
 def before_request():
-    if current_user is None:
-        print "current_user is None"
-    else:
-        print "current_user is " + str(current_user)
     g.user = current_user
 
 @lm.user_loader

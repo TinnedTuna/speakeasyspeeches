@@ -3,6 +3,7 @@
 {% block content %}
 <div class="alert alert-danger" role="alert">
     <p><strong>Not authorised!</strong></p>
-    <p>You are not authorised to view that page. Please <a href="{{ url_for('login') }}">login</a> and try again.</p>
+    <p>You are not authorised to view that page. Please <a href="{{
+        url_for('auth.login') }}">login</a> and try again.</p>
 </div>
 {% endblock %}
