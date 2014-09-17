@@ -6,3 +6,5 @@ env/*
 openshift-details.txt
 app.db
 *.swp
+dist/*
+SpeakEasy_Speeches.egg-info/*

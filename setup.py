@@ -27,5 +27,6 @@ setup(name='SpeakEasy-Speeches',
           'py-bcrypt==0.4',
           'six==1.7.3',
           'sqlalchemy-migrate==0.9.1',
-          'wsgiref==0.1.2']
+          'wsgiref==0.1.2',
+          'nose==1.3.4']
     )

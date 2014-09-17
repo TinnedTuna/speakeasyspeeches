@@ -18,7 +18,9 @@ class UserTests(unittest.TestCase):
         os.unlink(speakeasy.app.config['DATABASE'])
 
     def test_create_user(self):
-        self.app.get('/')
+        res = self.app.get('/')
+        print res
+        assert False
 
 if __name__ == "__main__":
     unittest.main()
