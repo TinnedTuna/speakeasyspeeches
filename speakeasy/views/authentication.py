@@ -1,13 +1,9 @@
-from flask import Blueprint, render_template, abort, flash, redirect, url_for
-from flask.ext.login import login_required, current_user, login_user, logout_user
-import speakeasy
+from flask import Blueprint, render_template, flash, redirect, url_for
+from flask.ext.login import login_user, logout_user
 from speakeasy import bcrypt
 from speakeasy.database.models import User 
 from speakeasy.views.utils import menu, site_config
 from speakeasy.forms import LoginForm
-
-import datetime
-
 
 auth = Blueprint('auth', __name__,
         template_folder='templates')

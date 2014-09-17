@@ -1,7 +1,6 @@
 from flask import Flask, redirect, url_for
-from flask.ext.sqlalchemy import SQLAlchemy
 from flask.ext.bcrypt import Bcrypt
-from flask.ext.login import LoginManager, current_user
+from flask.ext.login import LoginManager
 
 
 app = Flask(__name__)

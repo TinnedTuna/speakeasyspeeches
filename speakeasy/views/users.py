@@ -1,12 +1,9 @@
 from flask import Blueprint, render_template, abort, flash, redirect, url_for
-from flask.ext.login import login_required, current_user
-import speakeasy
+from flask.ext.login import login_required
 from speakeasy import bcrypt
 from speakeasy.database.models import User, db_session
 from speakeasy.forms import UserForm
 from speakeasy.views.utils import menu, site_config
-
-import datetime
 
 # Named with _blueprint suffic to avoid name collision
 # with users() below

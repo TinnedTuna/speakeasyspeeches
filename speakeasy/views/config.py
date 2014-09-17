@@ -1,12 +1,9 @@
-from flask import Blueprint, render_template, abort, flash, redirect, url_for
+from flask import Blueprint, render_template, flash
 from flask.ext.login import login_required, current_user
-import speakeasy
-from speakeasy.database.models import Config, db_session, Page
+from speakeasy.database.models import db_session, Page
 from speakeasy.forms import ConfigForm 
-from speakeasy.views.utils import menu, blog_menu_location, site_config
+from speakeasy.views.utils import menu, site_config
 
-
-import datetime
 
 config_blueprint = Blueprint('config', __name__,
         template_folder='templates', url_prefix='/config')

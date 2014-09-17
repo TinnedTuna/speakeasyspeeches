@@ -1,6 +1,5 @@
 from flask import Blueprint, render_template, abort, flash
 from flask.ext.login import login_required, current_user
-import speakeasy
 from speakeasy.database.models import Page, db_session
 from speakeasy.views.utils import menu, site_config
 from speakeasy.forms import CreatePage

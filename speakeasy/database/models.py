@@ -1,8 +1,6 @@
-from datetime import datetime
-
 from sqlalchemy import create_engine, Column, Integer, String, Text, \
         DateTime, ForeignKey, Boolean
-from sqlalchemy.orm import scoped_session, sessionmaker, backref, relation
+from sqlalchemy.orm import scoped_session, sessionmaker, relation
 from sqlalchemy.ext.declarative import declarative_base
 
 import markdown

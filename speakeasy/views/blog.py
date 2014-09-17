@@ -1,6 +1,5 @@
-from flask import Blueprint, render_template, abort, flash, redirect, url_for
+from flask import Blueprint, render_template, abort, flash
 from flask.ext.login import login_required, current_user
-import speakeasy
 from speakeasy.database.models import Blog, db_session
 from speakeasy.forms import BlogPost
 from speakeasy.views.utils import menu, blog_menu_location, site_config
