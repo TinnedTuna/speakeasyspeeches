@@ -3,21 +3,22 @@ import unittest
 import tempfile
 
 import speakeasy 
-from speakeasy.database.models import init_db, User, db_session
+from speakeasy.database.models import init_db, User, db_session, engine
 from speakeasy import bcrypt
 
 class PagesTest(unittest.TestCase):
     
     admin_created = False
     def setUp(self):
-        self.db_handle, speakeasy.app.config['DATABASE'] = tempfile.mkstemp()
+        self.db_handle,  db_name = tempfile.mkstemp()
+        speakeasy.app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite://'+db_name
         speakeasy.app.config['TESTING'] = True
         self.app = speakeasy.app.test_client()
         init_db()
 
     def tearDown(self):
         os.close(self.db_handle)
-        os.unlink(speakeasy.app.config['DATABASE'])
+        os.unlink(speakeasy.app.config['SQLALCHEMY_DATABASE_URI'])
 
     def _login(self, username=None, password=None):
         if username is None:
@@ -46,7 +47,8 @@ class PagesTest(unittest.TestCase):
         admin_user.display_name = "Administrator"
         admin_user.password = bcrypt.generate_password_hash("admin_pass")
         db_session.add(admin_user)
-        self.admin_Created=True
+        db_session.commit()
+        self.admin_created=True
 
     def test_get_index(self):
         res = self.app.get('/', follow_redirects=True)
