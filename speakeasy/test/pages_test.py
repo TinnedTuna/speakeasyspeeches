@@ -10,15 +10,16 @@ class PagesTest(unittest.TestCase):
     
     admin_created = False
     def setUp(self):
-        self.db_handle,  db_name = tempfile.mkstemp()
-        speakeasy.app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite://'+db_name
+        self.db_handle,  self.db_name = tempfile.mkstemp()
+        speakeasy.app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite://'+self.db_name
         speakeasy.app.config['TESTING'] = True
         self.app = speakeasy.app.test_client()
         init_db()
 
     def tearDown(self):
         os.close(self.db_handle)
-        os.unlink(speakeasy.app.config['SQLALCHEMY_DATABASE_URI'])
+        db_session.remove()
+        os.unlink(self.db_name)
 
     def _login(self, username=None, password=None):
         if username is None:
